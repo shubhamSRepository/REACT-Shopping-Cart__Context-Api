@@ -2,26 +2,28 @@ import React from "react";
 import styles from "../styles/ItemCard.module.css";
 import { useContext } from "react";
 import itemContext from "../itemContext";
+import totalContext from "../totalContext";
 
 function ItemCard({ name, price }) {
 
-  const value = useContext(itemContext);
+  const {item, setItem} = useContext(itemContext);
+  const { total, setTotal } = useContext(totalContext);
 
   const handleAdd = () => {
-    value.setTotal(value.total + price);
-    value.setItem(value.item + 1);
+    setTotal(total + price);
+    setItem(item + 1);
   };
 
   const handleRemove = () => {
 
-    if (value.total > 0) {
+    if (total > 0) {
 
       // value.setTotal(() => (value.total - price));
 
       /*both ways are correct. we can also "setTotal" the way we used "setState". we can set price like this also*/
-      value.setTotal((prevState) => prevState - price);
+      setTotal((prevState) => prevState - price);
 
-      value.setItem(value.item - 1);
+      setItem(item - 1);
     }
 
   };

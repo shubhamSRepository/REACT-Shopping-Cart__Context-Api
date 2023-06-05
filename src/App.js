@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Items from './components/Items';
 import Navbar from './components/Navbar';
 import itemContext from './itemContext';
+import totalContext from './totalContext';
 
 
 function App() {
@@ -26,12 +27,14 @@ function App() {
       but then we need to pass this object as it is. We cannot use 'short hand'.
     3. We can give string to 'value' as value="red".
       */
-    <itemContext.Provider value={{ total, setTotal, item, setItem }}>
-      <div className='App'>
-        <h2>Shopping Cart</h2>
-        <Navbar />
-        <Items />
-      </div>
+    <itemContext.Provider value={{ item, setItem }}>
+      <totalContext.Provider value={{ total, setTotal }}>
+        <div className='App'>
+          <h2>Shopping Cart</h2>
+          <Navbar />
+          <Items />
+        </div>
+      </totalContext.Provider>
     </itemContext.Provider>
   );
 }
