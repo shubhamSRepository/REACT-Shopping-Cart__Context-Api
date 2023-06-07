@@ -1,18 +1,18 @@
 import React from "react";
 import styles from "../styles/Total.module.css";
-import { useContext } from "react";
-import itemContext from "../itemContext";
-import totalContext from "../totalContext";
+import { useValue } from "../itemContext";
 
 function Navbar() {
 
-  const {item} = useContext(itemContext); // we can destucture as many element as we want from object
-  const { total } = useContext(totalContext);
+  const { item, total, handleResetBtn } = useValue();
 
   return (
     <div className={styles.container}>
       <h1>Total : &#x20B9; {total}</h1>
       <h1>Items: {item}</h1>
+      <button onClick={handleResetBtn}>
+        <h2>Reset</h2>
+      </button>
     </div>
   );
 }
