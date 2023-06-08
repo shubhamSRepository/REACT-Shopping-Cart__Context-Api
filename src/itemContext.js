@@ -1,4 +1,5 @@
 import { useState, createContext, useContext } from "react";
+import CartModal from "./components/CartModal";
 
 const itemContext = createContext();
 
@@ -23,6 +24,8 @@ function CustomItemContext({ children }) {
 
   const [total, setTotal] = useState(0);
   const [item, setItem] = useState(0);
+  const [showCart, setShowCart] = useState(false);
+  const [cart, setCart] = useState([]);
 
   /**we have transfered both the handlers from 'itemCard.js' so that all the things where we
    * are manipulating data using states can be at one place.
@@ -30,29 +33,59 @@ function CustomItemContext({ children }) {
    * Also now we don't have to pass 'setTotal' and 'setItem' in 'value' in 'itemContext.Provider'
    * as we are using 'setTotal' and 'setItem' in these handlers only.
    */
-  const handleAdd = (price) => {
-    setTotal(total + price);
+  const handleAdd = (product) => {
+    const index = cart.findIndex((item) => item.id === product.id); //if it does not find any id then index = -1
+
+    if (index === -1) {
+      setCart([...cart, { ...product, qty: 1 }]);
+      // setTotal(total + product.price);
+    } else {
+      cart[index].qty++;
+      setCart(cart);
+
+    }
+    setTotal(total + product.price);
     setItem(item + 1);
   };
 
-  const handleRemove = (price) => {
-    if (total > 0) {
-      // setTotal(() => (total - price));
 
-      /*both ways are correct. we can also "setTotal" the way we used "setState". we can set price like this also*/
-      setTotal((prevState) => prevState - price);
-
-      setItem(item - 1);
+  const handleRemove = (product) => {
+    const index = cart.findIndex((item) => item.id === product.id);
+    if (index === -1) {
+      alert("This item is not in your cart");
     }
+
+    if (cart[index].qty == 1) {
+      setCart(cart.filter((item, i) => i !== index));
+    }
+    else {
+      cart[index].qty--;
+      setCart(cart);
+    }
+    setTotal(total - product.price);
+    setItem(item - 1);
+
   };
 
-  const handleResetBtn = () => {
+
+
+  const clear = () => {
     setItem(0);
     setTotal(0);
+    setCart([]);
+  };
+
+  const toggle = () => {
+    setShowCart(!showCart);
   };
 
   return (
-    <itemContext.Provider value={{ total, item, handleAdd, handleRemove, handleResetBtn}}>
+    <itemContext.Provider
+      value={{ total, item, handleAdd, handleRemove, clear, toggle, cart, setCart }}
+    >
+      {showCart ? <CartModal /> : null}
+      {/*we can also write above condition as {showCart && <CartModel/>} */}
+
       {children}
     </itemContext.Provider>
   );

@@ -8,7 +8,7 @@ function Items() {
 
       {ItemData.map((item, index) => (
         <ItemCard
-          id={item.it}
+          id={item.id}
           name={item.name}
           price={item.price}
           key={index}

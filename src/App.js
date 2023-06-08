@@ -1,8 +1,6 @@
 import "./App.css";
-import { useState } from "react";
 import Items from "./components/Items";
 import Navbar from "./components/Navbar";
-import itemContext from "./itemContext";
 import CustomItemContext from "./itemContext";
 
 function App() {
